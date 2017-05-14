@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <functional>
 #include <stdlib.h>
+#include <mpi.h>
+
 
 using namespace std;
 
