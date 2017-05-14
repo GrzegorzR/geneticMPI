@@ -6,6 +6,13 @@
 #include <functional>
 #include <stdlib.h>
 #include <mpi.h>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/set.hpp>
+#include <boost/iostreams/stream_buffer.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+
 
 
 using namespace std;
@@ -278,9 +285,35 @@ bool isSolutionSatisfying(vector<Solution *> population)
 
 float POPULATION_INCREASE_FAKTOR = 1;
 
-int main()
+int main(int argc,char** argv)
 {
     //test
+
+    int size, rank;
+    MPI_Init(NULL, NULL);
+
+    // Get the number of processes
+    int world_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+    // Get the rank of the process
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+    // Get the name of the processor
+    char processor_name[MPI_MAX_PROCESSOR_NAME];
+    int name_len;
+    MPI_Get_processor_name(processor_name, &name_len);
+
+    // Print off a hello world message
+    printf("Hello world from processor %s, rank %d"
+           " out of %d processors\n",
+           processor_name, world_rank, world_size);
+
+    // Finalize the MPI environment.
+    MPI_Finalize();
+
+    /*
     tuples_org = createSolutionTuples();
     vector<Solution *> population = createPopulation(10);
     // epoch iterator
@@ -310,4 +343,5 @@ int main()
     cout << "End of execution, press any key to end" << endl;
     cin.get();
     return 0;
+    */
 }

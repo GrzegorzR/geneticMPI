@@ -1,5 +1,5 @@
 CC      = g++
-CFLAGS  = -lm -std=gnu++11
+CFLAGS  = -lm -std=gnu++11 -lboost_serialization
 LDFLAGS = -lfltk
 
 all: mpi
@@ -11,7 +11,7 @@ mpi:
 	mpicxx -o a.out $(CFLAGS)  main.cpp 
 
 run:
-	mpirun -np 2 ./a.out
+	mpirun -np 8 ./a.out
 
 clean:
 	rm *.out
