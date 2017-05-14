@@ -280,6 +280,7 @@ float POPULATION_INCREASE_FAKTOR = 1;
 
 int main()
 {
+    //test
     tuples_org = createSolutionTuples();
     vector<Solution *> population = createPopulation(10);
     // epoch iterator
