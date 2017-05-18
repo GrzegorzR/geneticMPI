@@ -16,6 +16,7 @@
 #include <boost/iostreams/device/back_inserter.hpp>
 #include "./genetic_logic.hpp"
 #include "./parallel_logic.hpp"
+#include <time.h>       /* time */
 
 
 using namespace std;
@@ -27,6 +28,7 @@ using namespace std;
 int main(int argc,char** argv)
 {
     //test
+
 
     int rank, size, i;
     int buffer[10];
@@ -41,10 +43,9 @@ int main(int argc,char** argv)
    
     tuples_org = createSolutionTuples();
     vector<Solution *> population = createPopulation(INITIAL_SOLUTIONS_AMOUNT);
-    //debug
-    // printPopulation(population);
-    // debug
-   
+
+    srand(time(NULL) + rank);
+
 
     if (rank == 0){
         SerializedPopulation sp = serilize(population);
@@ -55,13 +56,14 @@ int main(int argc,char** argv)
         //MPI_Send(&sp.tuplesNumInPeriods[0], periodsNum, MPI_INT, 1, 123, MPI_COMM_WORLD);
 
     }
-    printPopulation(population);
+   // printPopulation(population);
     cout << endl << endl;
-    if (rank == 1)
+    if (rank != 0)
     {
 
-        SerializedPopulation sp = recivePopulation( MPI_COMM_WORLD, &status);
-        vector<Solution *> population = deserialize(sp);
+        cout << getRandRangeInt(0,10)<< endl;
+       // SerializedPopulation sp = recivePopulation( MPI_COMM_WORLD, &status);
+        //vector<Solution *> population = deserialize(sp);
         //sp(population);
 
  /*       int recived[250];
@@ -73,7 +75,6 @@ int main(int argc,char** argv)
             cout << recived[i] << endl; 
         }
         cout << endl;*/
-        cout << rank << endl;
     }
     MPI_Finalize();
     return 0;
