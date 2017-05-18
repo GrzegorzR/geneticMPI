@@ -17,8 +17,6 @@ SerializedPopulation serilize(vector<Solution *> population){
         for( int i = 0; i < PERIODS_AMOUNT; i++ ){
             result.tuplesNumInPeriods.push_back( population[j]->periods[i]->tuples.size() );
             for(int k = 0; k < population[j]->periods[i]->tuples.size() ; k++){
-                cout << k << endl;
-
                 result.tuplesIds.push_back(population[j]->periods[i]->tuples[k]->id);
                 result.groupIds.push_back(population[j]->periods[i]->tuples[k]->groupId);
                 result.lecturerIds.push_back(population[j]->periods[i]->tuples[k]->lecturerId);
@@ -32,10 +30,30 @@ SerializedPopulation serilize(vector<Solution *> population){
 
 
 
-SerializedPopulation deserialize(vector<Solution *> population){
-    int populationSize =  
+ vector<Solution *>  deserialize(SerializedPopulation sp){
+    vector<Solution *> result;
+    int populationSize =  sp.tuplesNumInPeriods.size()/PERIODS_AMOUNT;
+    int tupleCounter = 0;
 
-    for()
+    for(int i = 0; i < populationSize; i++){
+        Solution * newSol = new Solution[1];
+        for(int j = 0; j < PERIODS_AMOUNT; j++){
+            Period * newPeriod = new Period[1];
+            int tuplesNum = sp.tuplesNumInPeriods[i*PERIODS_AMOUNT +j];
+            for(int k =0; k < tuplesNum; k++){
+                int tupleId = sp.tuplesIds[tupleCounter];
+                int groupId = sp.groupIds[tupleCounter];
+                int lecturerId = sp.lecturerIds[tupleCounter];
+                int roomId = sp.roomIds[tupleCounter];
+
+                Tuple * newTuple = new Tuple(tupleId, groupId, lecturerId, roomId);
+                newPeriod->tuples.push_back(newTuple);
+            }
+            newSol->periods.push_back(newPeriod);
+        }
+        result.push_back(newSol);
+    }
+    return result;
 }
 
 
@@ -61,6 +79,8 @@ void broadcastPopulation(SerializedPopulation sp,  MPI_Comm world){
     for (int i = 1; i < 8; i++ ){
         MPI_Send(periodsNum, 1, MPI_INT, i, 121, MPI_COMM_WORLD);
         MPI_Send(tuplesNum, 1, MPI_INT, i, 123, MPI_COMM_WORLD);
+
+        MPI_Send(&sp.tuplesNumInPeriods[0], *periodsNum, MPI_INT, i, 14, MPI_COMM_WORLD);
 
         MPI_Send(&sp.tuplesIds[0], *tuplesNum, MPI_INT, i, 10, MPI_COMM_WORLD);
         MPI_Send(&sp.groupIds[0], *tuplesNum, MPI_INT, i, 11, MPI_COMM_WORLD);
@@ -103,7 +123,9 @@ SerializedPopulation recivePopulation(MPI_Comm world, MPI_Status * status){
     result.tuplesIds = vector<int>(tuplesIds, tuplesIds + *tuplesNum);
     result.groupIds = vector<int>(groupIds, groupIds + *tuplesNum);
     result.lecturerIds = vector<int>(lecturerIds, lecturerIds + *tuplesNum);
-    sresult.roomIds = vector<int>(roomIds, *tuplesNum);
+    result.roomIds = vector<int>(roomIds, roomIds + *tuplesNum);
 
+
+    
     return result;
 }

@@ -47,6 +47,7 @@ struct Period
 struct Solution
 {
     vector<Period *> periods;
+    Solution() {}
     Solution(vector<Period *> periods): periods(periods) {}
 };
 
