@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const int INITIAL_SOLUTIONS_AMOUNT = 5;
+const int INITIAL_SOLUTIONS_AMOUNT = 100;
 //SOLUTION PARAMETERS
 
 // const int TUPLES_AMOUNT = 25;
@@ -20,16 +20,16 @@ const int INITIAL_SOLUTIONS_AMOUNT = 5;
 // const int GROUPS_AMOUNT = 2;
 
 const int TUPLES_AMOUNT = 50;
-const int PERIODS_AMOUNT = 10;
+const int PERIODS_AMOUNT = 50;
 const int LECTURERS_AMOUNT = 10;
 const int ROOMS_AMOUNT = 8;
 const int GROUPS_AMOUNT = 10;
 
-
-
-
-
-
+// const int TUPLES_AMOUNT = 1;
+// const int PERIODS_AMOUNT = 1;
+// const int LECTURERS_AMOUNT = 1;
+// const int ROOMS_AMOUNT = 1;
+// const int GROUPS_AMOUNT = 1;
 
 struct Tuple
 {
@@ -47,8 +47,8 @@ struct Period
 struct Solution
 {
     vector<Period *> periods;
+    Solution(vector<Period *> periods) : periods(periods) {}
     Solution() {}
-    Solution(vector<Period *> periods): periods(periods) {}
 };
 
 /*UTILS*/
@@ -327,6 +327,105 @@ void printPopulation(vector<Solution *> population)
     {
         printToConsole(population[i]);
     }
+}
+
+void printRoomSolution(Solution *population)
+{
+    //periods iterate
+    for (int i = 0; i < population->periods.size(); i++)
+    {
+        // tuple iterate
+        Period *period = population->periods.at(i);
+        vector<int> roomOverload(ROOMS_AMOUNT, 0);
+        for (int j = 0; j < period->tuples.size(); j++)
+        {
+            Tuple *tuple = period->tuples.at(j);
+            roomOverload.at(tuple->roomId) = roomOverload.at(tuple->roomId) + 1;
+        }
+        for (int j = 0; j < roomOverload.size(); j++)
+        {
+            cout << roomOverload.at(j) << ";";
+        }
+        cout << endl;
+    }
+}
+
+void printRoomsOverload(ofstream &ofstream, Solution *population)
+{
+    ofstream << "Room Overload" << endl;
+    //periods iterate
+    for (int i = 0; i < population->periods.size(); i++)
+    {
+        // tuple iterate
+        Period *period = population->periods.at(i);
+        vector<int> roomOverload(ROOMS_AMOUNT, 0);
+        for (int j = 0; j < period->tuples.size(); j++)
+        {
+            Tuple *tuple = period->tuples.at(j);
+            roomOverload.at(tuple->roomId) = roomOverload.at(tuple->roomId) + 1;
+        }
+        for (int j = 0; j < roomOverload.size(); j++)
+        {
+            ofstream << roomOverload.at(j) << ";";
+        }
+        ofstream << endl;
+    }
+}
+
+void printGroupsOverload(ofstream &ofstream, Solution *population)
+{
+    ofstream << "Group Overload" << endl;
+    //periods iterate
+    for (int i = 0; i < population->periods.size(); i++)
+    {
+        // tuple iterate
+        Period *period = population->periods.at(i);
+        vector<int> roomOverload(GROUPS_AMOUNT, 0);
+        for (int j = 0; j < period->tuples.size(); j++)
+        {
+            Tuple *tuple = period->tuples.at(j);
+            roomOverload.at(tuple->groupId) = roomOverload.at(tuple->roomId) + 1;
+        }
+        for (int j = 0; j < roomOverload.size(); j++)
+        {
+            ofstream << roomOverload.at(j) << ";";
+        }
+        ofstream << endl;
+    }
+}
+
+void printLecturersOverload(ofstream &ofstream, Solution *population)
+{
+    ofstream << "Lecturer Overload" << endl;
+    //periods iterate
+    for (int i = 0; i < population->periods.size(); i++)
+    {
+        // tuple iterate
+        Period *period = population->periods.at(i);
+        vector<int> roomOverload(LECTURERS_AMOUNT, 0);
+        for (int j = 0; j < period->tuples.size(); j++)
+        {
+            Tuple *tuple = period->tuples.at(j);
+            roomOverload.at(tuple->lecturerId) = roomOverload.at(tuple->roomId) + 1;
+        }
+        for (int j = 0; j < roomOverload.size(); j++)
+        {
+            ofstream << roomOverload.at(j) << ";";
+        }
+        ofstream << endl;
+    }
+}
+
+void printCSVSolution(Solution *solution)
+{
+    ofstream myfile;
+    myfile.open("solution.csv");
+
+    printRoomsOverload(myfile, solution);
+    printGroupsOverload(myfile, solution);
+    printLecturersOverload(myfile, solution);
+
+    myfile.close();
 }
 
 float POPULATION_INCREASE_FAKTOR = 1;

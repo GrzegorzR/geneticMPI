@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <functional>
 #include <stdlib.h>
+#include <climits>
+#include <fstream>
 #include <mpi.h>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
@@ -59,8 +61,8 @@ int main(int argc,char** argv)
     {
 
         SerializedPopulation sp = recivePopulation( MPI_COMM_WORLD, &status);
-        vector<Solution *> population = deserialize(printPopulation);
-        sp(population);
+        vector<Solution *> population = deserialize(sp);
+        //sp(population);
 
  /*       int recived[250];
         //MPI_Recv(recived, 250, MPI_INT, 0, 123, MPI_COMM_WORLD, &status);
