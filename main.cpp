@@ -51,32 +51,28 @@ int main(int argc,char** argv)
         SerializedPopulation sp = serilize(population);
         int sum_of_elems = 0;
 
-        broadcastPopulation(sp,MPI_COMM_WORLD);
+        broadcastPopulation(sp);
+    printPopulation(population);
 
 
     }
-   // printPopulation(population);
-    cout << endl << endl;
-    if (rank != 0)
-    {
+    //cout << endl << "----------------------------------"<< rank<<endl;
+    if (rank == 1){
 
-        SerializedPopulation sp = recivePopulation( MPI_COMM_WORLD, &status);
-        vector<Solution *> population = deserialize(sp);
-        vector<Solution *> newSolutions = createNewSolutions(vector<Solution *> population);
-        SerializedPopulation newSolSerialized = serilize(newSolutions);
-        sendNewSolutionsToMaster
+        SerializedPopulation sp = recivePopulation( 0, &status);
+        vector<Solution *> pop = deserialize(sp);
+        printPopulation(pop);
 
-        //sp(population);
+        //vector<Solution *> newSolutions = createNewSolutions(vector<Solution *> population);
+        //SerializedPopulation newSolSerialized = serilize(newSolutions);
+        //sendNewSolutionsToMaster(newSolSerialized);
 
     }
+
+
     MPI_Finalize();
     return 0;
 
-/*
-    for(std::vector<int>::iterator it = sp.tuplesNumInPeriods.begin(); it != sp.tuplesNumInPeriods.end(); ++it)
-        sum_of_elems += *it;
 
-    cout << sum_of_elems << " " <<  sp.tuplesIds.size() << endl;*/
-    // epoch iterator
 
 }

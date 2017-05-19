@@ -24,7 +24,7 @@ const int PERIODS_AMOUNT = 50;
 const int LECTURERS_AMOUNT = 10;
 const int ROOMS_AMOUNT = 8;
 const int GROUPS_AMOUNT = 10;
-contst int NEW_SOLUTIONS_NUM = 20;
+const int NEW_SOLUTIONS_NUM = 20;
 float POPULATION_INCREASE_FAKTOR = 1;
 
 // const int TUPLES_AMOUNT = 1;
@@ -325,7 +325,7 @@ bool isSolutionSatisfying(vector<Solution *> population)
 
 void printPopulation(vector<Solution *> population)
 {
-    for (int i = 0; i < population.size(); i++)
+    for (int i = 0; i < 1; i++)
     {
         printToConsole(population[i]);
     }
