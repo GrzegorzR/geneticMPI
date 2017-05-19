@@ -52,8 +52,7 @@ int main(int argc,char** argv)
         int sum_of_elems = 0;
 
         broadcastPopulation(sp,MPI_COMM_WORLD);
-        //MPI_Bcast(&sp.tuplesNumInPeriods[0], 250, MPI_INT, 0, MPI_COMM_WORLD);
-        //MPI_Send(&sp.tuplesNumInPeriods[0], periodsNum, MPI_INT, 1, 123, MPI_COMM_WORLD);
+
 
     }
    // printPopulation(population);
@@ -61,20 +60,14 @@ int main(int argc,char** argv)
     if (rank != 0)
     {
 
-        cout << getRandRangeInt(0,10)<< endl;
-       // SerializedPopulation sp = recivePopulation( MPI_COMM_WORLD, &status);
-        //vector<Solution *> population = deserialize(sp);
+        SerializedPopulation sp = recivePopulation( MPI_COMM_WORLD, &status);
+        vector<Solution *> population = deserialize(sp);
+        vector<Solution *> newSolutions = createNewSolutions(vector<Solution *> population);
+        SerializedPopulation newSolSerialized = serilize(newSolutions);
+        sendNewSolutionsToMaster
+
         //sp(population);
 
- /*       int recived[250];
-        //MPI_Recv(recived, 250, MPI_INT, 0, 123, MPI_COMM_WORLD, &status);
-        MPI_Bcast(recived, 250, MPI_INT, 0, MPI_COMM_WORLD);
-
-        for (i=0; i<10; i++)
-        {
-            cout << recived[i] << endl; 
-        }
-        cout << endl;*/
     }
     MPI_Finalize();
     return 0;

@@ -134,3 +134,8 @@ SerializedPopulation recivePopulation(MPI_Comm world, MPI_Status * status){
 void sendNewSolutions(){
     
 }
+
+
+
+
+void masterInitialization(){}

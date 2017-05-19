@@ -24,6 +24,8 @@ const int PERIODS_AMOUNT = 50;
 const int LECTURERS_AMOUNT = 10;
 const int ROOMS_AMOUNT = 8;
 const int GROUPS_AMOUNT = 10;
+contst int NEW_SOLUTIONS_NUM = 20;
+float POPULATION_INCREASE_FAKTOR = 1;
 
 // const int TUPLES_AMOUNT = 1;
 // const int PERIODS_AMOUNT = 1;
@@ -428,4 +430,19 @@ void printCSVSolution(Solution *solution)
     myfile.close();
 }
 
-float POPULATION_INCREASE_FAKTOR = 1;
+
+vector<Solution *> createNewSolutions(vector<Solution *> population){
+
+        vector<Solution *> new_population;
+        for (int i = 0; i < NEW_SOLUTIONS_NUM; i++){
+            int index1 = getRandRangeInt(0, population.size());
+            int index2 = getRandRangeInt(0, population.size());
+            Solution *new_solution = crossSolutions(population[index1], population[index2]);
+            recombineSolution(new_solution);
+            mutateSolution(new_solution);
+            new_population.push_back(new_solution);
+        }
+
+        return new_population;
+
+}
