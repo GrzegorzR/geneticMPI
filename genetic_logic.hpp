@@ -11,27 +11,17 @@
 using namespace std;
 
 const int INITIAL_SOLUTIONS_AMOUNT = 100;
-//SOLUTION PARAMETERS
-
-// const int TUPLES_AMOUNT = 25;
-// const int PERIODS_AMOUNT = 10;
-// const int LECTURERS_AMOUNT = 2;
-// const int ROOMS_AMOUNT = 3;
-// const int GROUPS_AMOUNT = 2;
-
 const int TUPLES_AMOUNT = 50;
 const int PERIODS_AMOUNT = 50;
-const int LECTURERS_AMOUNT = 10;
-const int ROOMS_AMOUNT = 8;
-const int GROUPS_AMOUNT = 10;
+const int LECTURERS_AMOUNT = 50;
+const int ROOMS_AMOUNT = 3;
+const int GROUPS_AMOUNT = 50;
 const int NEW_SOLUTIONS_NUM = 20;
 float POPULATION_INCREASE_FAKTOR = 1;
 
-// const int TUPLES_AMOUNT = 1;
-// const int PERIODS_AMOUNT = 1;
-// const int LECTURERS_AMOUNT = 1;
-// const int ROOMS_AMOUNT = 1;
-// const int GROUPS_AMOUNT = 1;
+
+
+
 
 struct Tuple
 {
@@ -287,7 +277,7 @@ vector<Solution *> naturalSelection(vector<Solution *> population)
         selectionMode = 1;
     }
 
-    int survialsAmount = population.size() >= 10 ? ceil(population.size() * 0.9) : population.size() - 1;
+    int survialsAmount = population.size() >= 10 ? ceil(population.size() * 0.5) : population.size() - 1;
     int threshold = costs.at(population.size() - survialsAmount - 1);
 
     vector<Solution *> populationSelected;
